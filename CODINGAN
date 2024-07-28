@@ -1,0 +1,151 @@
+#include <iostream>
+#include <string>
+#include <limits>
+
+using namespace std;
+
+const int MAX_SIZE = 2;
+
+struct Sepatu {
+    string id;
+    string nama;
+    int jumlah;
+    double harga;
+};
+
+struct User {
+    string username;
+    string password;
+};
+
+class SistemSepatu {
+private:
+    Sepatu daftarSepatu[MAX_SIZE];
+    int jumlahSepatu;
+
+public:
+    SistemSepatu() : jumlahSepatu(0) {}
+
+    void tampilkanMenu() {
+        cout << "\nMenu Sistem Sepatu\n";
+        cout << "1. Create Sepatu\n";
+        cout << "2. Read Sepatu\n";
+        cout << "3. Update Sepatu\n";
+        cout << "4. Delete Sepatu\n";
+        cout << "5. Find Sepatu\n";
+        cout << "6. Exit\n";
+        cout << "Pilih menu: ";
+    }
+
+    void createSepatu() {
+        if (jumlahSepatu >= MAX_SIZE) {
+            cout << "Kapasitas penuh. Tidak bisa menambah sepatu baru.\n";
+            return;
+        }
+
+        Sepatu sepatuBaru;
+        cout << "Masukkan ID Sepatu: ";
+        cin.ignore();
+        getline(cin, sepatuBaru.id);
+        cout << "Masukkan Nama Sepatu: ";
+        getline(cin, sepatuBaru.nama);
+        cout << "Masukkan Jumlah Sepatu: ";
+        cin >> sepatuBaru.jumlah;
+        cout << "Masukkan Harga Sepatu: ";
+        cin >> sepatuBaru.harga;
+
+        daftarSepatu[jumlahSepatu++] = sepatuBaru;
+        cout << "Sepatu berhasil ditambahkan.\n";
+    }
+
+    void readSepatu() {
+        if (jumlahSepatu == 0) {
+            cout << "Tidak ada Stok Sepatu tersimpan.\n";
+            return;
+        }
+
+        cout << "\nDaftar Sepatu:\n";
+        for (int i = 0; i < jumlahSepatu; i++) {
+            cout << "ID: " << daftarSepatu[i].id << ", Nama: " << daftarSepatu[i].nama
+                 << ", Jumlah: " << daftarSepatu[i].jumlah << ", Harga: " << daftarSepatu[i].harga << endl;
+        }
+    }
+
+    void updateSepatu() {
+        if (jumlahSepatu == 0) {
+            cout << "Tidak ada Stok Sepatu tersimpan.\n";
+            return;
+        }
+
+        string id;
+        cout << "Masukkan ID Sepatu yang ingin diupdate: ";
+        cin.ignore();
+        getline(cin, id);
+
+        for (int i = 0; i < jumlahSepatu; i++) {
+            if (daftarSepatu[i].id == id) {
+                cout << "Masukkan Nama Sepatu Baru: ";
+                getline(cin, daftarSepatu[i].nama);
+                cout << "Masukkan Jumlah Sepatu Baru: ";
+                cin >> daftarSepatu[i].jumlah;
+                cout << "Masukkan Harga Sepatu Baru: ";
+                cin >> daftarSepatu[i].harga;
+                cout << "Data sepatu berhasil diupdate.\n";
+                return;
+            }
+        }
+    }
+};
+
+bool cekLogin(User user, string username, string password) {
+    if (user.username == username && user.password == password) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int main() {
+    User user;
+    user.username = "admin";
+    user.password = "password";
+
+    string username, password;
+
+    cout << "Masukkan username: ";
+    cin >> username;
+    cout << "Masukkan password: ";
+    cin >> password;
+
+    if (cekLogin(user, username, password)) {
+        cout << "Login berhasil!" << endl;
+        SistemSepatu sistemSepatu;
+
+        while (true) {
+            sistemSepatu.tampilkanMenu();
+            int pilihan;
+            cin >> pilihan;
+
+            switch (pilihan) {
+                case 1:
+                    sistemSepatu.createSepatu();
+                    break;
+                case 2:
+                    sistemSepatu.readSepatu();
+                    break;
+                case 3:
+                    sistemSepatu.updateSepatu();
+                    break;
+                case 6:
+                    return 0;
+                default:
+                    cout << "Pilihan tidak valid.\n";
+            }
+        }
+    } else {
+        cout << "Login gagal!" << endl;
+        return 0;
+    }
+
+    return 0;
+}
