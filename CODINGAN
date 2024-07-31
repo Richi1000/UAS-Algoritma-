@@ -95,6 +95,53 @@ public:
             }
         }
     }
+
+    void deleteSepatu() {
+        if (jumlahSepatu == 0) {
+            cout << "Tidak ada Stok Sepatu tersimpan.\n";
+            return;
+        }
+
+        string id;
+        cout << "Masukkan ID Sepatu yang ingin dihapus: ";
+        cin.ignore();
+        getline(cin, id);
+
+        for (int i = 0; i < jumlahSepatu; i++) {
+            if (daftarSepatu[i].id == id) {
+                // Geser elemen ke kiri untuk menghapus sepatu
+                for (int j = i; j < jumlahSepatu - 1; j++) {
+                    daftarSepatu[j] = daftarSepatu[j + 1];
+                }
+                jumlahSepatu--;
+                cout << "Sepatu berhasil dihapus.\n";
+                return;
+            }
+        }
+        cout << "Sepatu tidak ditemukan.\n";
+    }
+
+    void findSepatu() {
+        if (jumlahSepatu == 0) {
+            cout << "Tidak ada Stok Sepatu tersimpan.\n";
+            return;
+        }
+
+        string id;
+        cout << "Masukkan ID Sepatu yang ingin dicari: ";
+        cin.ignore();
+        getline(cin, id);
+
+        for (int i = 0; i < jumlahSepatu; i++) {
+            if (daftarSepatu[i].id == id) {
+                 cout << "Sepatu ditemukan!" << endl;
+                cout << "ID: " << daftarSepatu[i].id << ", Nama: " << daftarSepatu[i].nama
+                     << ", Jumlah: " << daftarSepatu[i].jumlah << ", Harga: " << daftarSepatu[i].harga << endl;
+                return;
+            }
+        }
+        cout << "Sepatu tidak ditemukan." << endl;
+    }
 };
 
 bool cekLogin(User user, string username, string password) {
@@ -136,10 +183,16 @@ int main() {
                 case 3:
                     sistemSepatu.updateSepatu();
                     break;
+                case 4:
+                    sistemSepatu.deleteSepatu();
+                    break;
+                case 5:
+                    sistemSepatu.findSepatu();
+                    break;
                 case 6:
                     return 0;
                 default:
-                    cout << "Pilihan tidak valid.\n";
+                    cout << "Pilihan tidak valid." << endl;
             }
         }
     } else {
